@@ -437,162 +437,25 @@
       z-index: 2;
     }
 
-    /* App mockup inside phone */
-    .app-mock {
+    /* Screenshot carousel */
+    .screenshot-carousel {
+      position: relative;
+      width: 100%;
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      font-size: 11px;
-      color: var(--neutral-800);
     }
 
-    .app-mock__header {
-      padding: 40px 16px 12px;
-      text-align: center;
+    .screenshot-carousel__img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 800ms var(--ease-out-quart);
     }
 
-    .app-mock__title {
-      font-family: var(--font-body);
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--neutral-900);
-    }
-
-    .app-mock__subtitle {
-      font-size: 10px;
-      color: var(--neutral-500);
-      margin-top: 2px;
-    }
-
-    .app-mock__stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      padding: 8px 14px;
-    }
-
-    .app-mock__stat {
-      background: var(--teal-50);
-      border-radius: 10px;
-      padding: 10px 8px;
-      text-align: center;
-    }
-
-    .app-mock__stat-number {
-      font-weight: 700;
-      font-size: 18px;
-      color: var(--teal-700);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .app-mock__stat-label {
-      font-size: 8px;
-      color: var(--teal-600);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: 2px;
-    }
-
-    .app-mock__list {
-      flex: 1;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .app-mock__item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      background: var(--color-surface);
-      border: 1px solid var(--neutral-200);
-      border-radius: 10px;
-    }
-
-    .app-mock__item-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 14px;
-    }
-
-    .app-mock__item-icon--pass {
-      background: oklch(92% 0.06 155);
-      color: oklch(40% 0.12 155);
-    }
-
-    .app-mock__item-icon--progress {
-      background: oklch(92% 0.06 80);
-      color: oklch(45% 0.12 80);
-    }
-
-    .app-mock__item-content {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .app-mock__item-title {
-      font-weight: 600;
-      font-size: 11px;
-      color: var(--neutral-800);
-    }
-
-    .app-mock__item-meta {
-      font-size: 9px;
-      color: var(--neutral-500);
-      margin-top: 1px;
-    }
-
-    .app-mock__item-badge {
-      font-size: 9px;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 6px;
-      flex-shrink: 0;
-    }
-
-    .app-mock__item-badge--pass {
-      background: oklch(92% 0.06 155);
-      color: oklch(40% 0.12 155);
-    }
-
-    .app-mock__item-badge--progress {
-      background: oklch(92% 0.06 80);
-      color: oklch(45% 0.12 80);
-    }
-
-    .app-mock__tabs {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      border-top: 1px solid var(--neutral-200);
-      padding: 6px 0 20px;
-    }
-
-    .app-mock__tab {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      font-size: 8px;
-      font-weight: 500;
-      color: var(--neutral-400);
-      padding-top: 6px;
-    }
-
-    .app-mock__tab--active {
-      color: var(--teal-600);
-    }
-
-    .app-mock__tab svg {
-      width: 18px;
-      height: 18px;
+    .screenshot-carousel__img--active {
+      opacity: 1;
     }
 
     /* Floating decorative elements */
@@ -817,71 +680,12 @@
       align-items: center;
     }
 
-    .highlight__visual {
-      background: var(--teal-50);
-      border-radius: 16px;
-      padding: var(--space-2xl);
-      border: 1px solid oklch(90% 0.01 220);
-    }
-
-    .highlight__report {
-      font-size: 0.8rem;
-    }
-
-    .highlight__report-header {
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      padding-bottom: var(--space-md);
-      border-bottom: 2px solid var(--teal-700);
-      margin-bottom: var(--space-md);
-    }
-
-    .highlight__report-logo {
-      height: 28px;
-      width: auto;
-    }
-
-    .highlight__report-title {
-      font-family: var(--font-display);
-      font-weight: 600;
-      font-size: 1rem;
-      color: var(--teal-800);
-    }
-
-    .highlight__report-date {
-      margin-left: auto;
-      font-size: 0.75rem;
-      color: var(--neutral-500);
-    }
-
-    .highlight__report-table {
+    .highlight__screenshot {
       width: 100%;
-      border-collapse: collapse;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .highlight__report-table th {
-      text-align: left;
-      font-weight: 600;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--neutral-500);
-      padding: 8px 6px;
-      border-bottom: 1px solid var(--neutral-200);
-    }
-
-    .highlight__report-table td {
-      padding: 8px 6px;
-      font-size: 0.78rem;
-      color: var(--neutral-700);
-      border-bottom: 1px solid var(--neutral-100);
-    }
-
-    .highlight__report-pass {
-      color: oklch(45% 0.12 155);
-      font-weight: 600;
+      border-radius: 12px;
+      box-shadow:
+        0 4px 24px -4px oklch(0% 0 0 / 0.1),
+        0 12px 40px -8px oklch(0% 0 0 / 0.08);
     }
 
     .highlight__content {
@@ -1097,78 +901,18 @@
         </div>
       </div>
 
-      <!-- Phone mockup -->
+      <!-- Phone mockup with screenshot carousel -->
       <div class="hero__visual">
         <div class="phone-frame">
           <div class="phone-frame__screen">
             <div class="phone-frame__notch"></div>
-            <div class="app-mock">
-              <div class="app-mock__header">
-                <div class="app-mock__title">Logbook</div>
-                <div class="app-mock__subtitle">Today's Sterilization Cycles</div>
-              </div>
-              <div class="app-mock__stats">
-                <div class="app-mock__stat">
-                  <div class="app-mock__stat-number">12</div>
-                  <div class="app-mock__stat-label">Cycles</div>
-                </div>
-                <div class="app-mock__stat">
-                  <div class="app-mock__stat-number">47</div>
-                  <div class="app-mock__stat-label">Pouches</div>
-                </div>
-                <div class="app-mock__stat">
-                  <div class="app-mock__stat-number">2</div>
-                  <div class="app-mock__stat-label">Pending</div>
-                </div>
-              </div>
-              <div class="app-mock__list">
-                <div class="app-mock__item">
-                  <div class="app-mock__item-icon app-mock__item-icon--pass">&#10003;</div>
-                  <div class="app-mock__item-content">
-                    <div class="app-mock__item-title">Batch #041 &middot; M31</div>
-                    <div class="app-mock__item-meta">Pouches &middot; 8 instruments &middot; 9:14 AM</div>
-                  </div>
-                  <div class="app-mock__item-badge app-mock__item-badge--pass">Pass</div>
-                </div>
-                <div class="app-mock__item">
-                  <div class="app-mock__item-icon app-mock__item-icon--progress">&#9202;</div>
-                  <div class="app-mock__item-content">
-                    <div class="app-mock__item-title">Batch #042 &middot; M32</div>
-                    <div class="app-mock__item-meta">Wrapped &middot; 12 instruments &middot; 10:30 AM</div>
-                  </div>
-                  <div class="app-mock__item-badge app-mock__item-badge--progress">Loaded</div>
-                </div>
-                <div class="app-mock__item">
-                  <div class="app-mock__item-icon app-mock__item-icon--pass">&#10003;</div>
-                  <div class="app-mock__item-content">
-                    <div class="app-mock__item-title">Batch #040 &middot; M31</div>
-                    <div class="app-mock__item-meta">Pouches &middot; 6 instruments &middot; 8:45 AM</div>
-                  </div>
-                  <div class="app-mock__item-badge app-mock__item-badge--pass">Pass</div>
-                </div>
-              </div>
-              <div class="app-mock__tabs">
-                <div class="app-mock__tab app-mock__tab--active">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>
-                  Logbook
-                </div>
-                <div class="app-mock__tab">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-                  Maint.
-                </div>
-                <div class="app-mock__tab">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                  Spore
-                </div>
-                <div class="app-mock__tab">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  Reports
-                </div>
-                <div class="app-mock__tab">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1.08 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1.08z"/></svg>
-                  Settings
-                </div>
-              </div>
+            <div class="screenshot-carousel" aria-label="App screenshots">
+              <img src="Screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-04-12 at 20.41.51.png" alt="SteriVault logbook view" class="screenshot-carousel__img screenshot-carousel__img--active">
+              <img src="Screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-04-12 at 20.42.12.png" alt="Load cycle form" class="screenshot-carousel__img">
+              <img src="Screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-04-12 at 20.42.19.png" alt="Unload cycle form" class="screenshot-carousel__img">
+              <img src="Screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-04-12 at 20.42.26.png" alt="Log maintenance form" class="screenshot-carousel__img">
+              <img src="Screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-04-12 at 20.42.39.png" alt="Maintenance list view" class="screenshot-carousel__img">
+              <img src="Screenshots/Simulator Screenshot - iPhone 17 Pro - 2026-04-12 at 20.42.45.png" alt="Start spore test form" class="screenshot-carousel__img">
             </div>
           </div>
         </div>
@@ -1289,67 +1033,7 @@
   <section class="highlight" id="reports">
     <div class="container highlight__inner">
       <div class="highlight__visual reveal">
-        <div class="highlight__report">
-          <div class="highlight__report-header">
-            <img src="logo.png" alt="" class="highlight__report-logo" width="32" height="32">
-            <span class="highlight__report-title">SteriVault Report</span>
-            <span class="highlight__report-date">Mar 1 – Mar 31, 2026</span>
-          </div>
-          <table class="highlight__report-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Machine</th>
-                <th>Batch</th>
-                <th>Type</th>
-                <th>Count</th>
-                <th>Result</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>03/01</td>
-                <td>M31</td>
-                <td>#028</td>
-                <td>Pouches</td>
-                <td>8</td>
-                <td class="highlight__report-pass">Pass</td>
-              </tr>
-              <tr>
-                <td>03/01</td>
-                <td>M32</td>
-                <td>#029</td>
-                <td>Wrapped</td>
-                <td>14</td>
-                <td class="highlight__report-pass">Pass</td>
-              </tr>
-              <tr>
-                <td>03/02</td>
-                <td>M31</td>
-                <td>#030</td>
-                <td>Pouches</td>
-                <td>6</td>
-                <td class="highlight__report-pass">Pass</td>
-              </tr>
-              <tr>
-                <td>03/02</td>
-                <td>M31</td>
-                <td>#031</td>
-                <td>Pouches</td>
-                <td>10</td>
-                <td class="highlight__report-pass">Pass</td>
-              </tr>
-              <tr>
-                <td>03/03</td>
-                <td>M32</td>
-                <td>#032</td>
-                <td>Wrapped</td>
-                <td>12</td>
-                <td class="highlight__report-pass">Pass</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <img src="Screenshots/Simulator Screenshot - iPad Air 11-inch (M3) - 2026-04-12 at 20.49.25.png" alt="SteriVault PDF report showing sterilization cycle data" class="highlight__screenshot">
       </div>
 
       <div class="highlight__content reveal">
@@ -1412,6 +1096,18 @@
   </footer>
 
   <script>
+    // Screenshot carousel
+    (function() {
+      const imgs = document.querySelectorAll('.screenshot-carousel__img');
+      if (imgs.length < 2) return;
+      let current = 0;
+      setInterval(() => {
+        imgs[current].classList.remove('screenshot-carousel__img--active');
+        current = (current + 1) % imgs.length;
+        imgs[current].classList.add('screenshot-carousel__img--active');
+      }, 3000);
+    })();
+
     // Scroll-triggered reveals
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
