@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>SteriVault — Digital Sterilization Records for Dental Practices</title>
+  <meta name="description" content="SteriVault helps dental practices manage sterilization cycles, spore tests, maintenance logs, and reports in one secure digital record system backed up through a shared office iCloud account.">
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Teal palette — derived from the logo */
+      --teal-950: oklch(18% 0.04 220);
+      --teal-900: oklch(24% 0.06 220);
+      --teal-800: oklch(32% 0.07 220);
+      --teal-700: oklch(38% 0.08 220);
+      --teal-600: oklch(44% 0.09 220);
+      --teal-500: oklch(50% 0.10 220);
+      --teal-400: oklch(58% 0.09 220);
+      --teal-300: oklch(68% 0.07 220);
+      --teal-200: oklch(80% 0.04 220);
+      --teal-100: oklch(90% 0.02 220);
+      --teal-50:  oklch(96% 0.008 220);
+
+      /* Neutrals — teal-tinted */
+      --neutral-950: oklch(12% 0.01 220);
+      --neutral-900: oklch(18% 0.01 220);
+      --neutral-800: oklch(28% 0.008 220);
+      --neutral-700: oklch(38% 0.008 220);
+      --neutral-600: oklch(48% 0.006 220);
+      --neutral-500: oklch(58% 0.005 220);
+      --neutral-400: oklch(68% 0.004 220);
+      --neutral-300: oklch(78% 0.004 220);
+      --neutral-200: oklch(88% 0.004 220);
+      --neutral-100: oklch(94% 0.004 220);
+      --neutral-50:  oklch(97.5% 0.003 220);
+
+      /* Semantic */
+      --color-bg: oklch(98% 0.004 80);
+      --color-surface: oklch(99% 0.002 80);
+      --color-text: var(--neutral-900);
+      --color-text-secondary: var(--neutral-600);
+      --color-accent: var(--teal-700);
+      --color-accent-light: var(--teal-100);
+      --color-accent-hover: var(--teal-800);
+
+      /* Typography */
+      --font-display: 'Fraunces', 'Georgia', serif;
+      --font-body: 'Plus Jakarta Sans', system-ui, sans-serif;
+
+      /* Spacing */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 32px;
+      --space-2xl: 48px;
+      --space-3xl: 64px;
+      --space-4xl: 96px;
+      --space-5xl: 128px;
+
+      /* Motion */
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-fast: 150ms;
+      --duration-med: 300ms;
+      --duration-slow: 600ms;
+
+      /* Layout */
+      --max-width: 1200px;
+      --content-padding: clamp(20px, 5vw, 48px);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--color-text);
+      background: var(--color-bg);
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* ===== UTILITIES ===== */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding-left: var(--content-padding);
+      padding-right: var(--content-padding);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity var(--duration-slow) var(--ease-out-quart),
+                  transform var(--duration-slow) var(--ease-out-quart);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
+    /* ===== NAV ===== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: var(--space-md) 0;
+      transition: background var(--duration-med) var(--ease-out-quart),
+                  box-shadow var(--duration-med) var(--ease-out-quart);
+    }
+
+    .nav.scrolled {
+      background: oklch(98% 0.004 80 / 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 oklch(0% 0 0 / 0.06);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .nav__logo img {
+      height: 44px;
+      width: auto;
+    }
+
+    .nav__logo-text {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--teal-800);
+      letter-spacing: -0.02em;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xl);
+      list-style: none;
+    }
+
+    .nav__link {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--neutral-600);
+      transition: color var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .nav__link:hover,
+    .nav__link:focus-visible {
+      color: var(--color-accent);
+    }
+
+    .nav__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: 10px 22px;
+      background: var(--color-accent);
+      color: oklch(98% 0.005 220);
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: background var(--duration-fast) var(--ease-out-quart),
+                  transform var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .nav__cta:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .nav__cta:active {
+      transform: translateY(0);
+    }
+
+    .nav__cta:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    .nav__cta svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding-top: clamp(120px, 18vh, 200px);
+      padding-bottom: clamp(80px, 12vh, 160px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3xl);
+      align-items: center;
+    }
+
+    .hero__content {
+      animation: fade-up 800ms var(--ease-out-expo) forwards;
+    }
+
+    .hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: 6px 14px;
+      background: var(--color-accent-light);
+      color: var(--teal-700);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero__badge svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .hero__title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw + 0.5rem, 4rem);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--neutral-950);
+      margin-bottom: var(--space-lg);
+      font-optical-sizing: auto;
+    }
+
+    .hero__title em {
+      font-style: italic;
+      color: var(--teal-600);
+    }
+
+    .hero__description {
+      font-size: clamp(1.05rem, 1.2vw, 1.2rem);
+      color: var(--color-text-secondary);
+      max-width: 48ch;
+      margin-bottom: var(--space-2xl);
+      line-height: 1.7;
+    }
+
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: 14px 28px;
+      background: var(--color-accent);
+      color: oklch(98% 0.005 220);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background var(--duration-fast) var(--ease-out-quart),
+                  transform var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    .btn-primary svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--color-text);
+      border: 1.5px solid var(--neutral-300);
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: border-color var(--duration-fast) var(--ease-out-quart),
+                  transform var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary:active { transform: translateY(0); }
+
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    /* iPhone mockup */
+    .hero__visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      animation: fade-up 800ms var(--ease-out-expo) 200ms both;
+    }
+
+    .phone-frame {
+      position: relative;
+      width: 280px;
+      height: 570px;
+      background: var(--neutral-950);
+      border-radius: 44px;
+      padding: 12px;
+      box-shadow:
+        0 0 0 1px oklch(0% 0 0 / 0.1),
+        0 20px 60px -12px oklch(0% 0 0 / 0.25),
+        0 40px 80px -20px oklch(20% 0.04 220 / 0.2);
+    }
+
+    .phone-frame__screen {
+      width: 100%;
+      height: 100%;
+      background: var(--color-surface);
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-frame__notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 28px;
+      background: var(--neutral-950);
+      border-radius: 0 0 18px 18px;
+      z-index: 2;
+    }
+
+    /* App mockup inside phone */
+    .app-mock {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      font-size: 11px;
+      color: var(--neutral-800);
+    }
+
+    .app-mock__header {
+      padding: 40px 16px 12px;
+      text-align: center;
+    }
+
+    .app-mock__title {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--neutral-900);
+    }
+
+    .app-mock__subtitle {
+      font-size: 10px;
+      color: var(--neutral-500);
+      margin-top: 2px;
+    }
+
+    .app-mock__stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      padding: 8px 14px;
+    }
+
+    .app-mock__stat {
+      background: var(--teal-50);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .app-mock__stat-number {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--teal-700);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .app-mock__stat-label {
+      font-size: 8px;
+      color: var(--teal-600);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    .app-mock__list {
+      flex: 1;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .app-mock__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--color-surface);
+      border: 1px solid var(--neutral-200);
+      border-radius: 10px;
+    }
+
+    .app-mock__item-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+
+    .app-mock__item-icon--pass {
+      background: oklch(92% 0.06 155);
+      color: oklch(40% 0.12 155);
+    }
+
+    .app-mock__item-icon--progress {
+      background: oklch(92% 0.06 80);
+      color: oklch(45% 0.12 80);
+    }
+
+    .app-mock__item-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .app-mock__item-title {
+      font-weight: 600;
+      font-size: 11px;
+      color: var(--neutral-800);
+    }
+
+    .app-mock__item-meta {
+      font-size: 9px;
+      color: var(--neutral-500);
+      margin-top: 1px;
+    }
+
+    .app-mock__item-badge {
+      font-size: 9px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .app-mock__item-badge--pass {
+      background: oklch(92% 0.06 155);
+      color: oklch(40% 0.12 155);
+    }
+
+    .app-mock__item-badge--progress {
+      background: oklch(92% 0.06 80);
+      color: oklch(45% 0.12 80);
+    }
+
+    .app-mock__tabs {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--neutral-200);
+      padding: 6px 0 20px;
+    }
+
+    .app-mock__tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 8px;
+      font-weight: 500;
+      color: var(--neutral-400);
+      padding-top: 6px;
+    }
+
+    .app-mock__tab--active {
+      color: var(--teal-600);
+    }
+
+    .app-mock__tab svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Floating decorative elements */
+    .hero__glow {
+      position: absolute;
+      top: -100px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, oklch(85% 0.06 220 / 0.3) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    @media (max-width: 900px) {
+      .hero__inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero__description { margin-left: auto; margin-right: auto; }
+      .hero__actions { justify-content: center; }
+
+      .hero__visual { margin-top: var(--space-2xl); }
+
+      .phone-frame {
+        width: 240px;
+        height: 490px;
+      }
+    }
+
+    /* ===== TRUST STRIP ===== */
+    .trust {
+      padding: var(--space-2xl) 0;
+      border-top: 1px solid var(--neutral-200);
+      border-bottom: 1px solid var(--neutral-200);
+    }
+
+    .trust__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(var(--space-xl), 5vw, var(--space-4xl));
+      flex-wrap: wrap;
+    }
+
+    .trust__item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      color: var(--neutral-500);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .trust__item svg {
+      width: 20px;
+      height: 20px;
+      color: var(--teal-500);
+    }
+
+    /* ===== SECTION HEADERS ===== */
+    .section-header {
+      max-width: 640px;
+      margin-bottom: var(--space-3xl);
+    }
+
+    .section-header--center {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--teal-600);
+      margin-bottom: var(--space-md);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw + 0.5rem, 3rem);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      color: var(--neutral-950);
+      margin-bottom: var(--space-md);
+    }
+
+    .section-description {
+      font-size: clamp(1rem, 1.1vw, 1.15rem);
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ===== FEATURES ===== */
+    .features {
+      padding: clamp(80px, 12vh, 140px) 0;
+    }
+
+    .features__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-2xl) var(--space-xl);
+    }
+
+    .feature {
+      padding: var(--space-xl) 0;
+    }
+
+    .feature__icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--teal-50);
+      border-radius: 10px;
+      margin-bottom: var(--space-lg);
+      color: var(--teal-600);
+    }
+
+    .feature__icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .feature__title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--neutral-900);
+      margin-bottom: var(--space-sm);
+    }
+
+    .feature__description {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .features__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .features__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== WORKFLOW ===== */
+    .workflow {
+      padding: clamp(80px, 12vh, 140px) 0;
+      background: var(--teal-50);
+    }
+
+    .workflow__steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-xl);
+      counter-reset: step;
+    }
+
+    .workflow__step {
+      counter-increment: step;
+      position: relative;
+      padding: var(--space-xl);
+      background: var(--color-surface);
+      border-radius: 14px;
+      border: 1px solid oklch(90% 0.01 220);
+    }
+
+    .workflow__step::before {
+      content: counter(step, decimal-leading-zero);
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--teal-200);
+      line-height: 1;
+      letter-spacing: -0.03em;
+      display: block;
+      margin-bottom: var(--space-md);
+    }
+
+    .workflow__step-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--neutral-900);
+      margin-bottom: var(--space-sm);
+    }
+
+    .workflow__step-text {
+      font-size: 0.925rem;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+      .workflow__steps {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+      }
+    }
+
+    /* ===== HIGHLIGHT SECTION ===== */
+    .highlight {
+      padding: clamp(80px, 12vh, 140px) 0;
+    }
+
+    .highlight__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3xl);
+      align-items: center;
+    }
+
+    .highlight__visual {
+      background: var(--teal-50);
+      border-radius: 16px;
+      padding: var(--space-2xl);
+      border: 1px solid oklch(90% 0.01 220);
+    }
+
+    .highlight__report {
+      font-size: 0.8rem;
+    }
+
+    .highlight__report-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding-bottom: var(--space-md);
+      border-bottom: 2px solid var(--teal-700);
+      margin-bottom: var(--space-md);
+    }
+
+    .highlight__report-logo {
+      height: 28px;
+      width: auto;
+    }
+
+    .highlight__report-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--teal-800);
+    }
+
+    .highlight__report-date {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--neutral-500);
+    }
+
+    .highlight__report-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .highlight__report-table th {
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--neutral-500);
+      padding: 8px 6px;
+      border-bottom: 1px solid var(--neutral-200);
+    }
+
+    .highlight__report-table td {
+      padding: 8px 6px;
+      font-size: 0.78rem;
+      color: var(--neutral-700);
+      border-bottom: 1px solid var(--neutral-100);
+    }
+
+    .highlight__report-pass {
+      color: oklch(45% 0.12 155);
+      font-weight: 600;
+    }
+
+    .highlight__content {
+      max-width: 480px;
+    }
+
+    .highlight__list {
+      list-style: none;
+      margin-top: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .highlight__list li {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
+      font-size: 0.95rem;
+      color: var(--neutral-700);
+      line-height: 1.6;
+    }
+
+    .highlight__list svg {
+      width: 20px;
+      height: 20px;
+      color: var(--teal-500);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 900px) {
+      .highlight__inner {
+        grid-template-columns: 1fr;
+      }
+
+      .highlight__visual { order: -1; }
+    }
+
+    /* ===== CTA SECTION ===== */
+    .cta {
+      padding: clamp(80px, 12vh, 140px) 0;
+      text-align: center;
+    }
+
+    .cta__inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .cta__title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw + 0.5rem, 3.2rem);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--neutral-950);
+      margin-bottom: var(--space-md);
+    }
+
+    .cta__title em {
+      font-style: italic;
+      color: var(--teal-600);
+    }
+
+    .cta__description {
+      font-size: 1.1rem;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-2xl);
+      line-height: 1.7;
+    }
+
+    .cta__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+      font-size: 0.85rem;
+      color: var(--neutral-500);
+    }
+
+    .cta__badge svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: var(--space-2xl) 0;
+      border-top: 1px solid var(--neutral-200);
+    }
+
+    .footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .footer__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+    }
+
+    .footer__brand img {
+      height: 28px;
+      width: auto;
+    }
+
+    .footer__brand-text {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--teal-800);
+    }
+
+    .footer__meta {
+      font-size: 0.85rem;
+      color: var(--neutral-500);
+    }
+
+    .footer__credit {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--neutral-400);
+      padding-top: var(--space-lg);
+      margin-top: var(--space-md);
+      border-top: 1px solid var(--neutral-100);
+    }
+
+    .footer__credit a {
+      color: var(--neutral-500);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .footer__credit a:hover {
+      color: var(--color-accent);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: var(--space-lg);
+      list-style: none;
+    }
+
+    .footer__link {
+      font-size: 0.85rem;
+      color: var(--neutral-500);
+      transition: color var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .footer__link:hover {
+      color: var(--color-accent);
+    }
+
+    @media (max-width: 600px) {
+      .footer__inner {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="/" class="nav__logo" aria-label="SteriVault home">
+        <img src="logo.png" alt="SteriVault logo" width="44" height="44">
+        <span class="nav__logo-text">SteriVault</span>
+      </a>
+      <ul class="nav__links">
+        <li><a href="#features" class="nav__link">Features</a></li>
+        <li><a href="#how-it-works" class="nav__link">How It Works</a></li>
+        <li><a href="#reports" class="nav__link">Reports</a></li>
+        <li>
+          <a href="#download" class="nav__cta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+            Coming Soon
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <div class="hero__badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+          iOS App for Dental Offices
+        </div>
+        <h1 class="hero__title">
+          Your sterilization records,<br>
+          <em>sealed in a vault.</em>
+        </h1>
+        <p class="hero__description">
+          Track every cycle, test, and maintenance task in one app. Ditch the paper logbook — SteriVault keeps your office organized, compliant, and backed up to iCloud.
+        </p>
+        <div class="hero__actions">
+          <a href="#download" class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+            Download on the App Store
+          </a>
+          <a href="#features" class="btn-secondary">See How It Works</a>
+        </div>
+      </div>
+
+      <!-- Phone mockup -->
+      <div class="hero__visual">
+        <div class="phone-frame">
+          <div class="phone-frame__screen">
+            <div class="phone-frame__notch"></div>
+            <div class="app-mock">
+              <div class="app-mock__header">
+                <div class="app-mock__title">Logbook</div>
+                <div class="app-mock__subtitle">Today's Sterilization Cycles</div>
+              </div>
+              <div class="app-mock__stats">
+                <div class="app-mock__stat">
+                  <div class="app-mock__stat-number">12</div>
+                  <div class="app-mock__stat-label">Cycles</div>
+                </div>
+                <div class="app-mock__stat">
+                  <div class="app-mock__stat-number">47</div>
+                  <div class="app-mock__stat-label">Pouches</div>
+                </div>
+                <div class="app-mock__stat">
+                  <div class="app-mock__stat-number">2</div>
+                  <div class="app-mock__stat-label">Pending</div>
+                </div>
+              </div>
+              <div class="app-mock__list">
+                <div class="app-mock__item">
+                  <div class="app-mock__item-icon app-mock__item-icon--pass">&#10003;</div>
+                  <div class="app-mock__item-content">
+                    <div class="app-mock__item-title">Batch #041 &middot; M31</div>
+                    <div class="app-mock__item-meta">Pouches &middot; 8 instruments &middot; 9:14 AM</div>
+                  </div>
+                  <div class="app-mock__item-badge app-mock__item-badge--pass">Pass</div>
+                </div>
+                <div class="app-mock__item">
+                  <div class="app-mock__item-icon app-mock__item-icon--progress">&#9202;</div>
+                  <div class="app-mock__item-content">
+                    <div class="app-mock__item-title">Batch #042 &middot; M32</div>
+                    <div class="app-mock__item-meta">Wrapped &middot; 12 instruments &middot; 10:30 AM</div>
+                  </div>
+                  <div class="app-mock__item-badge app-mock__item-badge--progress">Loaded</div>
+                </div>
+                <div class="app-mock__item">
+                  <div class="app-mock__item-icon app-mock__item-icon--pass">&#10003;</div>
+                  <div class="app-mock__item-content">
+                    <div class="app-mock__item-title">Batch #040 &middot; M31</div>
+                    <div class="app-mock__item-meta">Pouches &middot; 6 instruments &middot; 8:45 AM</div>
+                  </div>
+                  <div class="app-mock__item-badge app-mock__item-badge--pass">Pass</div>
+                </div>
+              </div>
+              <div class="app-mock__tabs">
+                <div class="app-mock__tab app-mock__tab--active">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>
+                  Logbook
+                </div>
+                <div class="app-mock__tab">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+                  Maint.
+                </div>
+                <div class="app-mock__tab">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  Spore
+                </div>
+                <div class="app-mock__tab">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Reports
+                </div>
+                <div class="app-mock__tab">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1.08-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1.08 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1.08z"/></svg>
+                  Settings
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <section class="trust" aria-label="Trust indicators">
+    <div class="container trust__inner">
+      <div class="trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Shared Office iCloud Backup
+      </div>
+      <div class="trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        Inspection-Ready Reports
+      </div>
+      <div class="trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+        iOS 17+
+      </div>
+      <div class="trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        $9.99/month at launch
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header section-header--center reveal">
+        <div class="section-label">Features</div>
+        <h2 class="section-title">Everything your logbook does.<br>Nothing it can't.</h2>
+        <p class="section-description">One app replaces the binders, clipboards, and spreadsheets.</p>
+      </div>
+
+      <div class="features__grid">
+        <div class="feature reveal">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>
+          </div>
+          <h3 class="feature__title">Cycle Logging</h3>
+          <p class="feature__description">Two-phase load/unload workflow. Record machine, batch, cycle type, instrument count, timing, and result — with separate staff sign-off at each step.</p>
+        </div>
+
+        <div class="feature reveal">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3 class="feature__title">Spore Test Tracking</h3>
+          <p class="feature__description">Log placement, incubation, and results. Auto-determines pass/fail from control and test strip outcomes.</p>
+        </div>
+
+        <div class="feature reveal">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <h3 class="feature__title">Maintenance Logs</h3>
+          <p class="feature__description">Track cleaning, drain cycles, filter changes, gasket replacements, and calibrations. Set due dates so nothing slips.</p>
+        </div>
+
+        <div class="feature reveal">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3 class="feature__title">PDF Reports</h3>
+          <p class="feature__description">Generate landscape reports for any date range. Share via email, print, or messaging — ready for audits in seconds.</p>
+        </div>
+
+        <div class="feature reveal">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <h3 class="feature__title">Staff & Machine Management</h3>
+          <p class="feature__description">Register sterilizers and staff once. Both populate dropdown selectors across the app for fast, consistent entry.</p>
+        </div>
+
+        <div class="feature reveal">
+          <div class="feature__icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></svg>
+          </div>
+          <h3 class="feature__title">iCloud Backup</h3>
+          <p class="feature__description">Auto-syncs to your private iCloud storage. Data persists across reinstalls and device changes. No accounts to create, no fees.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section class="workflow" id="how-it-works">
+    <div class="container">
+      <div class="section-header section-header--center reveal">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">Mirrors your real workflow</h2>
+        <p class="section-description">Load, run, unload, verify — SteriVault follows the same sequence your team already uses.</p>
+      </div>
+
+      <div class="workflow__steps">
+        <div class="workflow__step reveal">
+          <h3 class="workflow__step-title">Load the Cycle</h3>
+          <p class="workflow__step-text">Pick the machine, enter the batch number, choose pouches or wrapped, count instruments, and tap to log. The cycle is saved and marked in progress.</p>
+        </div>
+        <div class="workflow__step reveal">
+          <h3 class="workflow__step-title">Unload & Verify</h3>
+          <p class="workflow__step-text">A separate staff member records the unload — time, handler, pass/fail, and any notes. Dual accountability, built in.</p>
+        </div>
+        <div class="workflow__step reveal">
+          <h3 class="workflow__step-title">Report & Comply</h3>
+          <p class="workflow__step-text">Pull a date-range PDF anytime. Every data point is captured and formatted — ready for audits or internal review.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORTS HIGHLIGHT -->
+  <section class="highlight" id="reports">
+    <div class="container highlight__inner">
+      <div class="highlight__visual reveal">
+        <div class="highlight__report">
+          <div class="highlight__report-header">
+            <img src="logo.png" alt="" class="highlight__report-logo" width="32" height="32">
+            <span class="highlight__report-title">SteriVault Report</span>
+            <span class="highlight__report-date">Mar 1 – Mar 31, 2026</span>
+          </div>
+          <table class="highlight__report-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Machine</th>
+                <th>Batch</th>
+                <th>Type</th>
+                <th>Count</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>03/01</td>
+                <td>M31</td>
+                <td>#028</td>
+                <td>Pouches</td>
+                <td>8</td>
+                <td class="highlight__report-pass">Pass</td>
+              </tr>
+              <tr>
+                <td>03/01</td>
+                <td>M32</td>
+                <td>#029</td>
+                <td>Wrapped</td>
+                <td>14</td>
+                <td class="highlight__report-pass">Pass</td>
+              </tr>
+              <tr>
+                <td>03/02</td>
+                <td>M31</td>
+                <td>#030</td>
+                <td>Pouches</td>
+                <td>6</td>
+                <td class="highlight__report-pass">Pass</td>
+              </tr>
+              <tr>
+                <td>03/02</td>
+                <td>M31</td>
+                <td>#031</td>
+                <td>Pouches</td>
+                <td>10</td>
+                <td class="highlight__report-pass">Pass</td>
+              </tr>
+              <tr>
+                <td>03/03</td>
+                <td>M32</td>
+                <td>#032</td>
+                <td>Wrapped</td>
+                <td>12</td>
+                <td class="highlight__report-pass">Pass</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="highlight__content reveal">
+        <div class="section-label">Compliance-Ready</div>
+        <h2 class="section-title">Audit-proof documentation in one tap</h2>
+        <p class="section-description">Generate professional PDF reports covering every detail of your sterilization records. Share instantly.</p>
+        <ul class="highlight__list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Landscape format with complete data columns
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Daily, weekly, or monthly date ranges
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Share via email, print, or messaging
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Machine, batch, times, personnel, results, notes
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="download">
+    <div class="container cta__inner reveal">
+      <h2 class="cta__title">Ditch the binder.<br><em>Open the vault.</em></h2>
+      <p class="cta__description">$9.99/month. Designed for a shared office iPad, backed up through your practice's iCloud account.</p>
+      <a href="#" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+        Download on the App Store
+      </a>
+      <div class="cta__badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        Requires iOS 17+ and an iCloud account
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="logo.png" alt="" width="34" height="34">
+        <span class="footer__brand-text">SteriVault</span>
+      </div>
+      <ul class="footer__links">
+        <li><a href="privacy-policy.html" class="footer__link">Privacy Policy</a></li>
+        <li><a href="terms-of-use.html" class="footer__link">Terms of Use</a></li>
+        <li><a href="mailto:support@sterivault.net" class="footer__link">Contact</a></li>
+      </ul>
+      <div class="footer__meta">&copy; 2026 SteriVault. All rights reserved.</div>
+    </div>
+    <div class="footer__credit">Website by <a href="https://rdmediastudio.com" target="_blank" rel="noopener">RD Media Studio</a></div>
+  </footer>
+
+  <script>
+    // Scroll-triggered reveals
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // Stagger siblings
+          const siblings = entry.target.parentElement.querySelectorAll('.reveal');
+          const index = Array.from(siblings).indexOf(entry.target);
+          entry.target.style.transitionDelay = `${index * 80}ms`;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Nav scroll state
+    const nav = document.querySelector('.nav');
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          nav.classList.toggle('scrolled', window.scrollY > 40);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
